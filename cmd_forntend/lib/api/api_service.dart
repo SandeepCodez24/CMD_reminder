@@ -56,24 +56,20 @@ class Package {
   }
 }
 
-// API Service Class
 class ApiService {
-  // Base URL - Change this based on your testing environment
-  static const String baseUrl = 'http://localhost:3000'; // For web/desktop
-  // static const String baseUrl = 'http://10.0.2.2:3000'; // For Android emulator
-  // static const String baseUrl = 'http://192.168.1.xxx:3000'; // For physical device (replace with your IP)
+  static const String baseUrl = 'http://localhost:3000/api'; 
 
-  // Headers for API requests
+ 
   static const Map<String, String> headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   };
 
-  // Test connection to backend
+
   static Future<bool> testConnection() async {
     try {
       final response = await http
-          .get(Uri.parse('$baseUrl/health'), headers: headers)
+          .get(Uri.parse('http://localhost:3000/health'), headers: headers)
           .timeout(Duration(seconds: 5));
 
       print('Health check response: ${response.statusCode}');
@@ -84,7 +80,7 @@ class ApiService {
     }
   }
 
-  // Get all packages
+ 
   static Future<List<Package>> getAllPackages() async {
     try {
       print('Fetching all packages from: $baseUrl/packages');
@@ -146,7 +142,7 @@ class ApiService {
     }
   }
 
-  // Create new package
+
   static Future<Package> createPackage(Package package) async {
     try {
       // Test connection first
@@ -173,7 +169,7 @@ class ApiService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Package.fromJson(json.decode(response.body));
       } else {
-        // Try to parse error message from response
+        
         String errorMessage =
             'Failed to create package: ${response.statusCode}';
         try {
